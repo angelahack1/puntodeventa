@@ -1,0 +1,10 @@
+{
+  "watch": ["."],
+  "ext": "ts,tsx,js,jsx,json",
+  "ignore": [
+    "node_modules",
+    "out",
+    ".next"
+  ],
+  "exec": "next dev"
+} 
