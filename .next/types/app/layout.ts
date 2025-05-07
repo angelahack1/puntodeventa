@@ -1,4 +1,4 @@
-// File: C:\Users\angel\source\repos\NextJS\puntodeventa\src\app\layout.tsx
+// File: /home/angel/Developments/puntodeventa/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
