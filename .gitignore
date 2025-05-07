@@ -3,4 +3,10 @@
 /out
 /out/*
 package-lock.json
+.next/*
 .next
+.next/cache
+.next/cache/*
+.next/cache/webpack
+.next/cache/webpack/*
+.next/cache/webpack/client-production
