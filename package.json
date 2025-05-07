@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clean": "(if exist node_modules rd /s /q node_modules) && (if exist .next rd /s /q .next) && (if exist out rd /s /q out)"
+    "clean": "rm -rf node_modules .next out"
   },
   "dependencies": {
     "mongodb": "^6.16.0",
