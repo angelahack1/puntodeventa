@@ -10,3 +10,4 @@ package-lock.json
 .next/cache/webpack
 .next/cache/webpack/*
 .next/cache/webpack/client-production
+.env.local
