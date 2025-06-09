@@ -19,6 +19,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '--- Building the Docker image ---'
+                bat 'copy E:\\Developments\\puntodeventa\\.env.local .env.local'
+                bat 'pause 5'
                 bat 'docker build -t lepagopuntodeventa:1.0 .'
             }
         }
