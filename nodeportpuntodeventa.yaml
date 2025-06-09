@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: lepagopuntodeventa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lepagopuntodeventa
+      instance: "1"
+  template:
+    metadata:
+      labels:
+        app: lepagopuntodeventa
+        instance: "1"
+    spec:
+      containers:
+      - name: lepagopuntodeventa
+        image: lepagopuntodeventa:1.0
+        env:
+        - name: PUNTO_DE_VENTA_SERVICE_PORT
+          value: "31000"
+        ports:
+        - containerPort: 31000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lepagopuntodeventa
+  namespace: default  
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 31000
+    targetPort: 31000
+  selector:
+    app: lepagopuntodeventa
+---
+# lepagopuntodeventa-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lepagopuntodeventa-ingress
+  namespace: default
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/service: lepagopuntodeventa@kubernetescrd
+spec:
+  rules:
+  - host: lepagopuntodeventa.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: lepagopuntodeventa
+            port: 
+              number: 31000
