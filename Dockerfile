@@ -5,9 +5,10 @@ ENV NODE_VERSION 23.11.0
 ENV TZ="America/Mexico_City"
 
 RUN addgroup -g 1000 node \
-    && adduser -u 1000 -G node -s /bin/sh -D node \
+    && adduser -u 1000 -G node -s /bin/bash -D node \
     && apk add --no-cache \
         libstdc++ \
+        bash \
     && apk add --no-cache --virtual .build-deps \
         curl \
     && ARCH= OPENSSL_ARCH='linux*' && alpineArch="$(apk --print-arch)" \
@@ -111,6 +112,6 @@ WORKDIR /home/node/app
 
 RUN npm install
 
-RUN npm run build
+RUN ["/bin/bash", "-c", "npm run build"]
 
-CMD [ "npm", "run", "start" ]
+CMD [ "/bin/bash", "-c", "npm run start" ]
