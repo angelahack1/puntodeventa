@@ -1,10 +1,9 @@
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
-import { initializeProducts } from "@/db/db_access";
+import { getProductsFromDB } from "@/db/db_access";
 
 
 export default async function Home() {
-  await initializeProducts(); // Fetch products before rendering
+  const products = await getProductsFromDB();
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Nuestros Productos</h1>

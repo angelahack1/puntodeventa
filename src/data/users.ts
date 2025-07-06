@@ -17,5 +17,3 @@ export interface User {
     fecha_alta: Timestamp;
     fecha_cambio: Timestamp;
 }
-
-export const users: User[] = [];

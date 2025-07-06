@@ -1,17 +1,24 @@
-import { MongoClient } from 'mongodb';
-import { Product, products } from '@/data/products';
+import { connectToDatabase } from './mongodb';
+import { Product } from '@/data/products';
+import { ObjectId } from 'mongodb';
+
+interface AggregatedProductRaw {
+  _id: ObjectId; // MongoDB's default _id field
+  id: ObjectId; // The projected 'id' field from aggregation, still an ObjectId before toString()
+  qr: string;
+  nombre: string;
+  descripcion: string;
+  sku: string;
+  precio_inicial: number;
+  image_url: string;
+  estado_producto: { nombre_estado: string }[];
+  tipo_divisa: { nombre_tipo: string }[];
+}
 
 async function getProductsFromDB(): Promise<Product[]> {
-  const uri = process.env.MONGODB_URI;
-
-  if (!uri) throw new Error('MongoDB URI not found in environment variables');
-
-  const client = new MongoClient(uri);
-
   try {
-    await client.connect();
-    const database = client.db('lepago-trading-core');
-    const collection = database.collection('Producto');
+    const { db } = await connectToDatabase();
+    const collection = db.collection(process.env.MONGODB_PRODUCT_COLLECTION || 'Producto');
 
     const pipeline = [
       {
@@ -46,28 +53,22 @@ async function getProductsFromDB(): Promise<Product[]> {
       }
     ];
 
-    const aggregationResult = await collection.aggregate(pipeline).toArray();
+    const aggregationResult = await collection.aggregate<AggregatedProductRaw>(pipeline).toArray();
     
     return aggregationResult.map(product => ({
       id: product.id.toString(), 
       name: product.nombre,
       description: product.descripcion,
       price: product.precio_inicial,
-      divisa: product.divisa?.[0] || '', 
+      divisa: product.tipo_divisa?.[0]?.nombre_tipo || '', 
       image_url: product.image_url,
-      estado: product.estado?.[0] || 'N/A', 
+      estado: product.estado_producto?.[0]?.nombre_estado || 'N/A', 
     }));
 
   } catch (error) {
     console.error('Error fetching products from MongoDB:', error);
     return []; 
-  } finally {
-    await client.close();
   }
 }
 
-export const initializeProducts = async () => {
-  const dbProducts = await getProductsFromDB();
-  products.length = 0; 
-  products.push(...dbProducts);
-};
+export { getProductsFromDB };

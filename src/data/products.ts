@@ -7,6 +7,3 @@ export interface Product {
   image_url: string;
   estado: string;
 }
-
-export const products: Product[] = [];
-
