@@ -11,8 +11,8 @@ interface AggregatedProductRaw {
   sku: string;
   precio_inicial: number;
   image_url: string;
-  estado: { nombre_estado: string }[];
-  divisa: { nombre_tipo: string }[];
+  estado: { estado: string }[];
+  divisa: { divisa: string }[];
 }
 
 async function getProductsFromDB(): Promise<Product[]> {
@@ -60,9 +60,9 @@ async function getProductsFromDB(): Promise<Product[]> {
       name: product.nombre,
       description: product.descripcion,
       price: product.precio_inicial,
-      divisa: product.divisa?.[0]?.nombre_tipo || 'MXN', 
+      divisa: product.divisa?.[0]?.divisa || 'MXN', 
       image_url: product.image_url,
-      estado: product.estado?.[0]?.nombre_estado || 'N/A', 
+      estado: product.estado?.[0]?.estado || 'N/A', 
     }));
 
   } catch (error) {
