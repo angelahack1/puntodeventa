@@ -114,4 +114,4 @@ RUN npm install
 
 RUN ["/bin/bash", "-c", "npm run build"]
 
-CMD [ "/bin/bash", "-c", "npm run start" ]
+CMD [ "npm", "run", "start" ]

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev2": "nodemon",
     "build": "next build",
-    "start": "npx serve@latest out -p 31000",
+    "start": "next start",
     "clean": "rimraf ./node_modules ./.next ./out ./package-lock.json",
     "lint": "npx eslint . --fix"
   },
