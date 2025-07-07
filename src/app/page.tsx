@@ -1,8 +1,6 @@
 import ProductCard from "@/components/ProductCard";
 import { getProductsFromDB } from "@/db/db_access";
 
-export const dynamic = 'force-dynamic';
-
 export default async function Home() {
   const products = await getProductsFromDB();
   return (
