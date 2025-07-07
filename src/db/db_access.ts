@@ -11,8 +11,8 @@ interface AggregatedProductRaw {
   sku: string;
   precio_inicial: number;
   image_url: string;
-  estado: { estado: string }[];
-  divisa: { divisa: string }[];
+  estado: string[];
+  divisa: string[];
 }
 
 async function getProductsFromDB(): Promise<Product[]> {
@@ -54,27 +54,15 @@ async function getProductsFromDB(): Promise<Product[]> {
     ];
 
     const aggregationResult = await collection.aggregate<AggregatedProductRaw>(pipeline).toArray();
-    
+    console.log(aggregationResult)
     return aggregationResult.map(product => ({
-      id: product.id.toString(),
+      id: product.id?.toString(), 
       name: product.nombre,
       description: product.descripcion,
       price: product.precio_inicial,
-      divisa: Array.isArray(product.divisa)
-        ? (typeof product.divisa[0] === 'string'
-            ? product.divisa[0]
-            : (product.divisa[0]?.divisa ?? 'MXN'))
-        : (typeof product.divisa === 'string'
-            ? product.divisa
-            : (product.divisa as any)?.divisa ?? 'MXN'),
+      divisa: product.divisa?.[0] || '', 
       image_url: product.image_url,
-      estado: Array.isArray(product.estado)
-        ? (typeof product.estado[0] === 'string'
-            ? product.estado[0]
-            : (product.estado[0]?.estado ?? 'N/A'))
-        : (typeof product.estado === 'string'
-            ? product.estado
-            : (product.estado as any)?.estado ?? 'N/A'),
+      estado: product.estado?.[0] || 'N/A', 
     }));
 
   } catch (error) {
