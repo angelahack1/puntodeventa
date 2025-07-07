@@ -1,10 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  
+  output: 'export',
   devIndicators: {
-    position: 'bottom-right',
+    buildActivity: true,
+    buildActivityPosition: 'bottom-right',
   },
+};
+
+module.exports = {
+  output: 'export',
   images: {
     unoptimized: true,
   },
